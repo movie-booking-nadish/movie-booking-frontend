@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { authService } from '../services/authService';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 
 const SignIn: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const successMessage = (location.state as { message?: string })?.message;
   const { login } = useAuth();
 
   const [email, setEmail] = useState('');
@@ -68,6 +70,12 @@ const SignIn: React.FC = () => {
           <h2 className="text-3xl font-extrabold text-white">Sign In</h2>
           <p className="mt-2 text-sm text-gray-400">Welcome back to Movie Booking</p>
         </div>
+
+        {successMessage && (
+          <div className="mb-4 p-3 bg-green-900/50 border border-green-500 rounded-lg text-green-200 text-sm">
+            {successMessage}
+          </div>
+        )}
 
         {serverError && (
           <div className="mb-4 p-3 bg-red-900/50 border border-red-500 rounded-lg text-red-200 text-sm">
