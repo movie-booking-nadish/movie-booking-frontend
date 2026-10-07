@@ -13,7 +13,7 @@ export const showService = {
   },
 
   getByMovieId: async (movieId: number): Promise<Show[]> => {
-    const response = await api.get<Show[]>('/shows', { params: { movieId } });
+    const response = await api.get<Show[]>(`/shows/movie/${movieId}`);
     return response.data;
   },
 

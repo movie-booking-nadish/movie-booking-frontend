@@ -7,10 +7,10 @@ import RoleRoute from './components/RoleRoute';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Movies from './pages/Movies';
+import MovieDetails from './pages/MovieDetails';
 import NotAllowed from './pages/NotAllowed';
 import NotFound from './pages/NotFound';
 import {
-  MovieDetailsPage,
   TheatresPage,
   ShowsPage,
   SeatSelectionPage,
@@ -37,7 +37,7 @@ const App: React.FC = () => {
             {/* Public browsing routes */}
             <Route path="/" element={<Navigate to="/movies" replace />} />
             <Route path="/movies" element={<Movies />} />
-            <Route path="/movies/:id" element={<MovieDetailsPage />} />
+            <Route path="/movies/:id" element={<MovieDetails />} />
             <Route path="/theatres" element={<TheatresPage />} />
 
             {/* Customer protected routes */}
