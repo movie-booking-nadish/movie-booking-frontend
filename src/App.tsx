@@ -6,10 +6,10 @@ import ProtectedRoute from './components/ProtectedRoute';
 import RoleRoute from './components/RoleRoute';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
+import Movies from './pages/Movies';
 import NotAllowed from './pages/NotAllowed';
 import NotFound from './pages/NotFound';
 import {
-  MoviesPage,
   MovieDetailsPage,
   TheatresPage,
   ShowsPage,
@@ -36,7 +36,7 @@ const App: React.FC = () => {
           <Route element={<Layout />}>
             {/* Public browsing routes */}
             <Route path="/" element={<Navigate to="/movies" replace />} />
-            <Route path="/movies" element={<MoviesPage />} />
+            <Route path="/movies" element={<Movies />} />
             <Route path="/movies/:id" element={<MovieDetailsPage />} />
             <Route path="/theatres" element={<TheatresPage />} />
 
