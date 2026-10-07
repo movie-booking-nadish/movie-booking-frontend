@@ -9,10 +9,10 @@ import SignUp from './pages/SignUp';
 import Movies from './pages/Movies';
 import MovieDetails from './pages/MovieDetails';
 import Theatres from './pages/Theatres';
+import Shows from './pages/Shows';
 import NotAllowed from './pages/NotAllowed';
 import NotFound from './pages/NotFound';
 import {
-  ShowsPage,
   SeatSelectionPage,
   MyBookingsPage,
   AdminDashboardPage,
@@ -42,7 +42,7 @@ const App: React.FC = () => {
 
             {/* Customer protected routes */}
             <Route element={<ProtectedRoute />}>
-              <Route path="/shows" element={<ShowsPage />} />
+              <Route path="/shows" element={<Shows />} />
               <Route path="/shows/:id/seats" element={<SeatSelectionPage />} />
               <Route path="/my-bookings" element={<MyBookingsPage />} />
             </Route>
