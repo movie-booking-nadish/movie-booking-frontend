@@ -8,10 +8,10 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Movies from './pages/Movies';
 import MovieDetails from './pages/MovieDetails';
+import Theatres from './pages/Theatres';
 import NotAllowed from './pages/NotAllowed';
 import NotFound from './pages/NotFound';
 import {
-  TheatresPage,
   ShowsPage,
   SeatSelectionPage,
   MyBookingsPage,
@@ -38,7 +38,7 @@ const App: React.FC = () => {
             <Route path="/" element={<Navigate to="/movies" replace />} />
             <Route path="/movies" element={<Movies />} />
             <Route path="/movies/:id" element={<MovieDetails />} />
-            <Route path="/theatres" element={<TheatresPage />} />
+            <Route path="/theatres" element={<Theatres />} />
 
             {/* Customer protected routes */}
             <Route element={<ProtectedRoute />}>
