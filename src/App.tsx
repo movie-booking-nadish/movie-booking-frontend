@@ -12,6 +12,7 @@ import Theatres from './pages/Theatres';
 import Shows from './pages/Shows';
 import BookShow from './pages/BookShow';
 import MyBookings from './pages/MyBookings';
+import PaymentPage from './pages/Payment';
 import NotAllowed from './pages/NotAllowed';
 import NotFound from './pages/NotFound';
 import {
@@ -46,6 +47,7 @@ const App: React.FC = () => {
               <Route path="/shows/:id/book" element={<BookShow />} />
               <Route path="/shows/:id/seats" element={<BookShow />} />
               <Route path="/my-bookings" element={<MyBookings />} />
+              <Route path="/bookings/:id/payment" element={<PaymentPage />} />
             </Route>
 
             {/* Admin protected routes */}
