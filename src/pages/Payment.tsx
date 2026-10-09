@@ -47,14 +47,14 @@ const PaymentPage: React.FC = () => {
     }
   };
 
-  const handlePay = async () => {
+  const handlePay = async (simulateSuccess: boolean = true) => {
     if (!booking) return;
 
     try {
       setProcessing(true);
       setError(null);
 
-      // Step 1: Create payment record
+      // Step 1: Create payment record if none exists
       let paymentRecord = existingPayment;
       if (!paymentRecord) {
         paymentRecord = await paymentService.create({
@@ -63,12 +63,12 @@ const PaymentPage: React.FC = () => {
         });
       }
 
-      // Step 2: Process payment
-      const processedPayment = await paymentService.processPayment(paymentRecord.id, true);
+      // Step 2: Process payment with success flag
+      const processedPayment = await paymentService.processPayment(paymentRecord.id, simulateSuccess);
       setPaymentResult(processedPayment);
       setExistingPayment(processedPayment);
 
-      // Refresh booking to reflect CONFIRMED status
+      // Refresh booking to reflect new status (CONFIRMED or PENDING)
       const updatedBooking = await bookingService.getById(booking.id);
       setBooking(updatedBooking);
     } catch (err: any) {
@@ -76,6 +76,11 @@ const PaymentPage: React.FC = () => {
     } finally {
       setProcessing(false);
     }
+  };
+
+  const handleRetry = () => {
+    setPaymentResult(null);
+    setError(null);
   };
 
   if (loading) {
@@ -222,6 +227,15 @@ const PaymentPage: React.FC = () => {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                {paymentResult.status === 'FAILED' && (
+                  <button
+                    type="button"
+                    onClick={handleRetry}
+                    className="px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-semibold transition shadow-sm cursor-pointer"
+                  >
+                    🔄 Retry Payment
+                  </button>
+                )}
                 <Link
                   to="/my-bookings"
                   className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-semibold transition shadow-sm"
@@ -272,7 +286,7 @@ const PaymentPage: React.FC = () => {
                 <button
                   type="button"
                   disabled={processing}
-                  onClick={handlePay}
+                  onClick={() => handlePay(true)}
                   className="flex-1 py-3 px-6 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-md transition disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
                 >
                   {processing ? (
@@ -286,6 +300,17 @@ const PaymentPage: React.FC = () => {
                       <span>→</span>
                     </>
                   )}
+                </button>
+
+                <button
+                  type="button"
+                  disabled={processing}
+                  onClick={() => handlePay(false)}
+                  className="py-3 px-4 bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-800 font-semibold rounded-xl transition disabled:opacity-50 cursor-pointer text-xs flex items-center justify-center gap-1.5"
+                  title="Simulates payment rejection (POST /api/payments/{id}/process?success=false)"
+                >
+                  <span>⚠️</span>
+                  <span>Simulate Failed Payment</span>
                 </button>
               </div>
             </div>
