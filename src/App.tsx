@@ -11,11 +11,10 @@ import MovieDetails from './pages/MovieDetails';
 import Theatres from './pages/Theatres';
 import Shows from './pages/Shows';
 import BookShow from './pages/BookShow';
+import MyBookings from './pages/MyBookings';
 import NotAllowed from './pages/NotAllowed';
 import NotFound from './pages/NotFound';
 import {
-  SeatSelectionPage,
-  MyBookingsPage,
   AdminDashboardPage,
   AdminMoviesPage,
   AdminTheatresPage,
@@ -46,7 +45,7 @@ const App: React.FC = () => {
               <Route path="/shows" element={<Shows />} />
               <Route path="/shows/:id/book" element={<BookShow />} />
               <Route path="/shows/:id/seats" element={<BookShow />} />
-              <Route path="/my-bookings" element={<MyBookingsPage />} />
+              <Route path="/my-bookings" element={<MyBookings />} />
             </Route>
 
             {/* Admin protected routes */}
