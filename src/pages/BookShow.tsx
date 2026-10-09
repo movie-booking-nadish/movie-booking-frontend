@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { showService } from '../services/showService';
+import { bookingService } from '../services/bookingService';
 import { Show } from '../types';
 import { SeatMap } from '../components/SeatMap';
 
@@ -12,6 +13,11 @@ const BookShow: React.FC = () => {
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  const [submitting, setSubmitting] = useState<boolean>(false);
+  const [bookingError, setBookingError] = useState<string | null>(null);
+  const [bookingSuccess, setBookingSuccess] = useState<string | null>(null);
+  const [refreshKey, setRefreshKey] = useState<number>(0);
 
   useEffect(() => {
     if (!id) return;
@@ -31,11 +37,40 @@ const BookShow: React.FC = () => {
   }, [id]);
 
   const handleSeatToggle = (seatLabel: string) => {
+    setBookingError(null);
     setSelectedSeats((prev) =>
       prev.includes(seatLabel)
         ? prev.filter((s) => s !== seatLabel)
         : [...prev, seatLabel].sort()
     );
+  };
+
+  const handleConfirmBooking = async () => {
+    if (!show || selectedSeats.length === 0) return;
+    try {
+      setSubmitting(true);
+      setBookingError(null);
+      setBookingSuccess(null);
+
+      const booking = await bookingService.create({
+        showId: show.id,
+        seatNumbers: selectedSeats,
+        numberOfTickets: selectedSeats.length,
+      });
+
+      setBookingSuccess('Booking successfully created! Redirecting to payment...');
+      setTimeout(() => {
+        navigate(`/bookings/${booking.id}/payment`);
+      }, 1000);
+    } catch (err: any) {
+      const msg = err?.response?.data?.message || 'Failed to create booking. Please try again.';
+      setBookingError(msg);
+      // On failure refresh the seat map and reset chosen seats
+      setRefreshKey((k) => k + 1);
+      setSelectedSeats([]);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (loading) {
@@ -99,6 +134,7 @@ const BookShow: React.FC = () => {
             selectedSeats={selectedSeats}
             onSeatToggle={handleSeatToggle}
             maxSeats={10}
+            refreshKey={refreshKey}
           />
         </div>
 
@@ -141,6 +177,34 @@ const BookShow: React.FC = () => {
                 Rs. {totalAmount.toFixed(2)}
               </span>
             </div>
+
+            {/* Error or Success Feedback */}
+            {bookingError && (
+              <div className="p-3 bg-red-50 text-red-700 text-xs rounded-lg border border-red-200">
+                {bookingError}
+              </div>
+            )}
+            {bookingSuccess && (
+              <div className="p-3 bg-green-50 text-green-700 text-xs rounded-lg border border-green-200">
+                {bookingSuccess}
+              </div>
+            )}
+
+            <button
+              type="button"
+              disabled={selectedSeats.length === 0 || submitting}
+              onClick={handleConfirmBooking}
+              className="w-full mt-2 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-md shadow-indigo-100 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150 flex items-center justify-center cursor-pointer"
+            >
+              {submitting ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  Confirming Booking...
+                </>
+              ) : (
+                `Confirm Booking (${numberOfTickets} seat${numberOfTickets === 1 ? '' : 's'})`
+              )}
+            </button>
           </div>
         </div>
       </div>

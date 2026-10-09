@@ -7,6 +7,7 @@ interface SeatMapProps {
   selectedSeats: string[];
   onSeatToggle: (seatNumber: string) => void;
   maxSeats?: number;
+  refreshKey?: number;
 }
 
 export const SeatMap: React.FC<SeatMapProps> = ({
@@ -14,6 +15,7 @@ export const SeatMap: React.FC<SeatMapProps> = ({
   selectedSeats,
   onSeatToggle,
   maxSeats = 10,
+  refreshKey = 0,
 }) => {
   const [availability, setAvailability] = useState<SeatAvailability | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -21,7 +23,7 @@ export const SeatMap: React.FC<SeatMapProps> = ({
 
   useEffect(() => {
     fetchSeats();
-  }, [showId]);
+  }, [showId, refreshKey]);
 
   const fetchSeats = async () => {
     try {
