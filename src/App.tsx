@@ -17,10 +17,11 @@ import AdminDashboard from './pages/AdminDashboard';
 import ManageMovies from './pages/ManageMovies';
 import ManageTheatres from './pages/ManageTheatres';
 import ManageShows from './pages/ManageShows';
+import ManageBookings from './pages/ManageBookings';
+import AdminPayments from './pages/AdminPayments';
 import NotAllowed from './pages/NotAllowed';
 import NotFound from './pages/NotFound';
 import {
-  AdminBookingsPage,
   AdminUsersPage,
 } from './pages/Placeholders';
 
@@ -56,7 +57,8 @@ const App: React.FC = () => {
               <Route path="/admin/movies" element={<ManageMovies />} />
               <Route path="/admin/theatres" element={<ManageTheatres />} />
               <Route path="/admin/shows" element={<ManageShows />} />
-              <Route path="/admin/bookings" element={<AdminBookingsPage />} />
+              <Route path="/admin/bookings" element={<ManageBookings />} />
+              <Route path="/admin/payments" element={<AdminPayments />} />
               <Route path="/admin/users" element={<AdminUsersPage />} />
             </Route>
 
