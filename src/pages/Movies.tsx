@@ -2,6 +2,9 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Movie, MovieStatus } from '../types';
 import { movieService } from '../services/movieService';
 import MovieCard from '../components/MovieCard';
+import Spinner from '../components/Spinner';
+import ErrorMessage from '../components/ErrorMessage';
+import EmptyState from '../components/EmptyState';
 
 const Movies: React.FC = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -142,46 +145,24 @@ const Movies: React.FC = () => {
         )}
       </div>
 
-      {loading && (
-        <div className="min-h-[300px] flex flex-col items-center justify-center">
-          <svg className="animate-spin h-10 w-10 text-blue-500 mb-4" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-          </svg>
-          <p className="text-gray-400 text-sm">Loading movies...</p>
-        </div>
-      )}
+      {loading && <Spinner text="Loading movies..." />}
 
       {error && !loading && (
-        <div className="p-6 bg-red-900/30 border border-red-500/50 rounded-xl text-center max-w-lg mx-auto">
-          <p className="text-red-300 mb-4">{error}</p>
-          <button
-            onClick={fetchMovies}
-            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition"
-          >
-            Retry
-          </button>
-        </div>
+        <ErrorMessage message={error} onRetry={fetchMovies} />
       )}
 
       {!loading && !error && movies.length === 0 && (
-        <div className="text-center py-16 bg-gray-800/40 rounded-xl border border-gray-700 max-w-md mx-auto">
-          <span className="text-5xl block mb-3">🎬</span>
-          <h3 className="text-lg font-semibold text-white">No Movies Found</h3>
-          <p className="text-gray-400 text-sm mt-1">
-            {hasActiveFilters
+        <EmptyState
+          icon="🎬"
+          title="No Movies Found"
+          description={
+            hasActiveFilters
               ? 'No movies match your current search and filter criteria.'
-              : 'There are currently no movies available.'}
-          </p>
-          {hasActiveFilters && (
-            <button
-              onClick={handleClearFilters}
-              className="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg transition cursor-pointer"
-            >
-              Reset Filters
-            </button>
-          )}
-        </div>
+              : 'There are currently no movies available.'
+          }
+          actionText={hasActiveFilters ? 'Reset Filters' : undefined}
+          onAction={hasActiveFilters ? handleClearFilters : undefined}
+        />
       )}
 
       {!loading && !error && movies.length > 0 && (

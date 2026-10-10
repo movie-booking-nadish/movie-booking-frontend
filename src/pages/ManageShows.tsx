@@ -6,6 +6,9 @@ import { Show, ShowRequest, ShowStatus, Movie, Theatre } from '../types';
 import Modal from '../components/Modal';
 import ConfirmDialog from '../components/ConfirmDialog';
 import StatusBadge from '../components/StatusBadge';
+import Spinner from '../components/Spinner';
+import ErrorMessage from '../components/ErrorMessage';
+import EmptyState from '../components/EmptyState';
 
 const INITIAL_FORM: ShowRequest = {
   movieId: 0,
@@ -312,43 +315,34 @@ const ManageShows: React.FC = () => {
 
       {/* Main Table or Loading/Empty State */}
       {loading ? (
-        <div className="flex justify-center items-center py-20">
-          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600"></div>
-          <span className="ml-3 text-gray-600 font-medium">Loading shows...</span>
-        </div>
+        <Spinner text="Loading shows..." />
       ) : error ? (
-        <div className="p-8 bg-red-50 text-red-700 rounded-xl text-center">
-          <p className="font-semibold mb-3">{error}</p>
-          <button
-            onClick={loadAllData}
-            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm"
-          >
-            Retry
-          </button>
-        </div>
+        <ErrorMessage message={error} onRetry={loadAllData} />
       ) : filteredShows.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-gray-100 p-12 text-center shadow-sm">
-          <div className="text-4xl mb-3">🎭</div>
-          <h3 className="text-lg font-bold text-gray-800 mb-1">No Shows Found</h3>
-          <p className="text-gray-500 text-sm mb-4">
-            {selectedMovieFilter !== 'ALL' || selectedTheatreFilter !== 'ALL' || dateFilter || statusFilter !== 'ALL'
+        <EmptyState
+          icon="🎭"
+          title="No Shows Found"
+          description={
+            selectedMovieFilter !== 'ALL' || selectedTheatreFilter !== 'ALL' || dateFilter || statusFilter !== 'ALL'
               ? 'No scheduled shows match your filter criteria.'
-              : 'No movie shows are scheduled yet. Click "Schedule New Show" above!'}
-          </p>
-          {(selectedMovieFilter !== 'ALL' || selectedTheatreFilter !== 'ALL' || dateFilter || statusFilter !== 'ALL') && (
-            <button
-              onClick={() => {
-                setSelectedMovieFilter('ALL');
-                setSelectedTheatreFilter('ALL');
-                setDateFilter('');
-                setStatusFilter('ALL');
-              }}
-              className="text-xs text-indigo-600 font-semibold hover:underline cursor-pointer"
-            >
-              Reset all filters
-            </button>
-          )}
-        </div>
+              : 'No movie shows are scheduled yet. Click "Schedule New Show" above!'
+          }
+          actionText={
+            selectedMovieFilter !== 'ALL' || selectedTheatreFilter !== 'ALL' || dateFilter || statusFilter !== 'ALL'
+              ? 'Reset All Filters'
+              : 'Schedule New Show'
+          }
+          onAction={
+            selectedMovieFilter !== 'ALL' || selectedTheatreFilter !== 'ALL' || dateFilter || statusFilter !== 'ALL'
+              ? () => {
+                  setSelectedMovieFilter('ALL');
+                  setSelectedTheatreFilter('ALL');
+                  setDateFilter('');
+                  setStatusFilter('ALL');
+                }
+              : openAddModal
+          }
+        />
       ) : (
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="overflow-x-auto">

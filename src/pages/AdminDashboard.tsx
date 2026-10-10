@@ -4,6 +4,8 @@ import { movieService } from '../services/movieService';
 import { theatreService } from '../services/theatreService';
 import { showService } from '../services/showService';
 import { bookingService } from '../services/bookingService';
+import Spinner from '../components/Spinner';
+import ErrorMessage from '../components/ErrorMessage';
 
 interface DashboardStats {
   moviesCount: number;
@@ -133,12 +135,7 @@ const AdminDashboard: React.FC = () => {
   ];
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600"></div>
-        <span className="ml-3 text-gray-600 font-medium">Loading admin dashboard...</span>
-      </div>
-    );
+    return <Spinner text="Loading admin dashboard..." className="min-h-[60vh]" />;
   }
 
   return (
@@ -162,11 +159,8 @@ const AdminDashboard: React.FC = () => {
       </div>
 
       {error && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl text-sm flex items-center justify-between">
-          <span>⚠️ {error}</span>
-          <button onClick={() => setError(null)} className="font-bold ml-2 cursor-pointer">
-            ✕
-          </button>
+        <div className="mb-6">
+          <ErrorMessage message={error} onRetry={fetchStats} />
         </div>
       )}
 

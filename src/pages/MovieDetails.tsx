@@ -4,6 +4,9 @@ import { Movie, Show } from '../types';
 import { movieService } from '../services/movieService';
 import { showService } from '../services/showService';
 import StatusBadge from '../components/StatusBadge';
+import Spinner from '../components/Spinner';
+import ErrorMessage from '../components/ErrorMessage';
+import EmptyState from '../components/EmptyState';
 
 const MovieDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -36,22 +39,17 @@ const MovieDetails: React.FC = () => {
   }, [id]);
 
   if (loading) {
-    return (
-      <div className="min-h-[500px] flex flex-col items-center justify-center">
-        <svg className="animate-spin h-10 w-10 text-blue-500 mb-4" viewBox="0 0 24 24">
-          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-        </svg>
-        <p className="text-gray-400 text-sm">Loading movie details...</p>
-      </div>
-    );
+    return <Spinner text="Loading movie details..." className="min-h-[500px]" />;
   }
 
   if (error || !movie) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-16 text-center">
-        <div className="p-8 bg-gray-800 rounded-xl border border-red-500/30 max-w-md mx-auto">
-          <p className="text-red-400 mb-4">{error || 'Movie not found'}</p>
+      <div className="max-w-4xl mx-auto px-4 py-16">
+        <ErrorMessage
+          message={error || 'Movie not found'}
+          title="Could not find movie"
+        />
+        <div className="text-center mt-4">
           <Link
             to="/movies"
             className="inline-block px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium"
@@ -131,13 +129,11 @@ const MovieDetails: React.FC = () => {
       <div>
         <h2 className="text-2xl font-bold text-white mb-6">Scheduled Shows</h2>
         {shows.length === 0 ? (
-          <div className="p-8 bg-gray-800/50 rounded-xl border border-gray-700 text-center">
-            <span className="text-4xl block mb-2">🎟️</span>
-            <p className="text-gray-300 font-medium">No shows scheduled yet</p>
-            <p className="text-gray-400 text-sm mt-1">
-              Please check back later for upcoming screening dates.
-            </p>
-          </div>
+          <EmptyState
+            icon="🎟️"
+            title="No Shows Scheduled Yet"
+            description="Please check back later for upcoming screening dates."
+          />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {shows.map((show) => {

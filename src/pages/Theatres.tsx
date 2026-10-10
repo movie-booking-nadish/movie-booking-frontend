@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Theatre } from '../types';
 import { theatreService } from '../services/theatreService';
 import StatusBadge from '../components/StatusBadge';
+import Spinner from '../components/Spinner';
+import ErrorMessage from '../components/ErrorMessage';
+import EmptyState from '../components/EmptyState';
 
 const Theatres: React.FC = () => {
   const [theatres, setTheatres] = useState<Theatre[]>([]);
@@ -34,36 +37,18 @@ const Theatres: React.FC = () => {
         </p>
       </div>
 
-      {loading && (
-        <div className="min-h-[300px] flex flex-col items-center justify-center">
-          <svg className="animate-spin h-10 w-10 text-blue-500 mb-4" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-          </svg>
-          <p className="text-gray-400 text-sm">Loading theatres...</p>
-        </div>
-      )}
+      {loading && <Spinner text="Loading theatres..." />}
 
       {error && !loading && (
-        <div className="p-6 bg-red-900/30 border border-red-500/50 rounded-xl text-center max-w-lg mx-auto">
-          <p className="text-red-300 mb-4">{error}</p>
-          <button
-            onClick={fetchTheatres}
-            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition"
-          >
-            Retry
-          </button>
-        </div>
+        <ErrorMessage message={error} onRetry={fetchTheatres} />
       )}
 
       {!loading && !error && theatres.length === 0 && (
-        <div className="text-center py-16 bg-gray-800/40 rounded-xl border border-gray-700 max-w-md mx-auto">
-          <span className="text-5xl block mb-3">🏢</span>
-          <h3 className="text-lg font-semibold text-white">No Theatres Available</h3>
-          <p className="text-gray-400 text-sm mt-1">
-            There are currently no theatres listed in the system.
-          </p>
-        </div>
+        <EmptyState
+          icon="🏛️"
+          title="No Theatres Available"
+          description="There are currently no theatres listed in the system."
+        />
       )}
 
       {!loading && !error && theatres.length > 0 && (

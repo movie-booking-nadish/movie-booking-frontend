@@ -4,6 +4,8 @@ import { showService } from '../services/showService';
 import { bookingService } from '../services/bookingService';
 import { Show } from '../types';
 import { SeatMap } from '../components/SeatMap';
+import Spinner from '../components/Spinner';
+import ErrorMessage from '../components/ErrorMessage';
 
 const BookShow: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -74,25 +76,16 @@ const BookShow: React.FC = () => {
   };
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600"></div>
-        <span className="ml-3 text-gray-600 font-medium">Loading booking information...</span>
-      </div>
-    );
+    return <Spinner text="Loading booking information..." />;
   }
 
   if (error || !show) {
     return (
-      <div className="max-w-xl mx-auto my-12 p-6 bg-red-50 text-red-700 rounded-xl text-center">
-        <h2 className="text-xl font-bold mb-2">Error</h2>
-        <p className="mb-4">{error || 'Show not found'}</p>
-        <button
-          onClick={() => navigate('/shows')}
-          className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
-        >
-          Back to Shows
-        </button>
+      <div className="max-w-xl mx-auto my-12">
+        <ErrorMessage
+          message={error || 'Show not found'}
+          onRetry={() => navigate('/shows')}
+        />
       </div>
     );
   }

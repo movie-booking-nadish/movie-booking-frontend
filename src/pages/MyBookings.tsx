@@ -4,6 +4,9 @@ import { bookingService } from '../services/bookingService';
 import { Booking } from '../types';
 import StatusBadge from '../components/StatusBadge';
 import ConfirmDialog from '../components/ConfirmDialog';
+import Spinner from '../components/Spinner';
+import ErrorMessage from '../components/ErrorMessage';
+import EmptyState from '../components/EmptyState';
 
 const MyBookings: React.FC = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
@@ -61,27 +64,11 @@ const MyBookings: React.FC = () => {
   };
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600"></div>
-        <span className="ml-3 text-gray-600 font-medium">Loading your bookings...</span>
-      </div>
-    );
+    return <Spinner text="Loading your bookings..." className="min-h-[60vh]" />;
   }
 
   if (error) {
-    return (
-      <div className="max-w-xl mx-auto my-12 p-6 bg-red-50 text-red-700 rounded-xl text-center">
-        <h2 className="text-xl font-bold mb-2">Error</h2>
-        <p className="mb-4">{error}</p>
-        <button
-          onClick={fetchBookings}
-          className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 cursor-pointer"
-        >
-          Try Again
-        </button>
-      </div>
-    );
+    return <ErrorMessage message={error} onRetry={fetchBookings} />;
   }
 
   return (
@@ -119,21 +106,13 @@ const MyBookings: React.FC = () => {
       )}
 
       {bookings.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-gray-100 p-12 text-center max-w-lg mx-auto shadow-sm">
-          <div className="w-16 h-16 bg-indigo-50 text-indigo-500 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
-            🎟️
-          </div>
-          <h2 className="text-lg font-bold text-gray-800 mb-2">No Bookings Found</h2>
-          <p className="text-gray-500 text-sm mb-6">
-            You haven't made any ticket bookings yet. Explore our current movie listings!
-          </p>
-          <Link
-            to="/movies"
-            className="px-5 py-2.5 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 text-sm shadow-sm transition"
-          >
-            Explore Movies
-          </Link>
-        </div>
+        <EmptyState
+          icon="🎟️"
+          title="No Bookings Found"
+          description="You haven't made any ticket bookings yet. Explore our current movie listings!"
+          actionText="Explore Movies"
+          actionLink="/movies"
+        />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {bookings.map((booking) => {

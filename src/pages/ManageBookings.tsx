@@ -4,6 +4,9 @@ import { bookingService } from '../services/bookingService';
 import { Booking, BookingStatus } from '../types';
 import ConfirmDialog from '../components/ConfirmDialog';
 import StatusBadge from '../components/StatusBadge';
+import Spinner from '../components/Spinner';
+import ErrorMessage from '../components/ErrorMessage';
+import EmptyState from '../components/EmptyState';
 
 const ManageBookings: React.FC = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
@@ -174,41 +177,28 @@ const ManageBookings: React.FC = () => {
 
       {/* Main Table or Loading/Empty State */}
       {loading ? (
-        <div className="flex justify-center items-center py-20">
-          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600"></div>
-          <span className="ml-3 text-gray-600 font-medium">Loading bookings...</span>
-        </div>
+        <Spinner text="Loading bookings..." />
       ) : error ? (
-        <div className="p-8 bg-red-50 text-red-700 rounded-xl text-center">
-          <p className="font-semibold mb-3">{error}</p>
-          <button
-            onClick={fetchBookings}
-            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm"
-          >
-            Retry
-          </button>
-        </div>
+        <ErrorMessage message={error} onRetry={fetchBookings} />
       ) : filteredBookings.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-gray-100 p-12 text-center shadow-sm">
-          <div className="text-4xl mb-3">🎟️</div>
-          <h3 className="text-lg font-bold text-gray-800 mb-1">No Bookings Found</h3>
-          <p className="text-gray-500 text-sm mb-4">
-            {searchTerm || statusFilter !== 'ALL'
+        <EmptyState
+          icon="🎟️"
+          title="No Bookings Found"
+          description={
+            searchTerm || statusFilter !== 'ALL'
               ? 'No bookings match your current search or status filter.'
-              : 'No customer bookings have been created yet.'}
-          </p>
-          {(searchTerm || statusFilter !== 'ALL') && (
-            <button
-              onClick={() => {
-                setSearchTerm('');
-                setStatusFilter('ALL');
-              }}
-              className="text-xs text-indigo-600 font-semibold hover:underline cursor-pointer"
-            >
-              Clear filters
-            </button>
-          )}
-        </div>
+              : 'No customer bookings have been created yet.'
+          }
+          actionText={searchTerm || statusFilter !== 'ALL' ? 'Clear Filters' : undefined}
+          onAction={
+            searchTerm || statusFilter !== 'ALL'
+              ? () => {
+                  setSearchTerm('');
+                  setStatusFilter('ALL');
+                }
+              : undefined
+          }
+        />
       ) : (
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="overflow-x-auto">

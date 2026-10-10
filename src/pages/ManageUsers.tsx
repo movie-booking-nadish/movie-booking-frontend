@@ -4,6 +4,9 @@ import { useAuth } from '../context/AuthContext';
 import { User, UserUpdateRequest, Role } from '../types';
 import Modal from '../components/Modal';
 import ConfirmDialog from '../components/ConfirmDialog';
+import Spinner from '../components/Spinner';
+import ErrorMessage from '../components/ErrorMessage';
+import EmptyState from '../components/EmptyState';
 
 const ManageUsers: React.FC = () => {
   const { user: currentUser } = useAuth();
@@ -209,41 +212,28 @@ const ManageUsers: React.FC = () => {
 
       {/* Main Table or Loading/Empty State */}
       {loading ? (
-        <div className="flex justify-center items-center py-20">
-          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600"></div>
-          <span className="ml-3 text-gray-600 font-medium">Loading users...</span>
-        </div>
+        <Spinner text="Loading users..." />
       ) : error ? (
-        <div className="p-8 bg-red-50 text-red-700 rounded-xl text-center">
-          <p className="font-semibold mb-3">{error}</p>
-          <button
-            onClick={fetchUsers}
-            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm"
-          >
-            Retry
-          </button>
-        </div>
+        <ErrorMessage message={error} onRetry={fetchUsers} />
       ) : filteredUsers.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-gray-100 p-12 text-center shadow-sm">
-          <div className="text-4xl mb-3">👥</div>
-          <h3 className="text-lg font-bold text-gray-800 mb-1">No Users Found</h3>
-          <p className="text-gray-500 text-sm mb-4">
-            {searchTerm || roleFilter !== 'ALL'
+        <EmptyState
+          icon="👥"
+          title="No Users Found"
+          description={
+            searchTerm || roleFilter !== 'ALL'
               ? 'No registered users match your search or filter.'
-              : 'No users found in the system.'}
-          </p>
-          {(searchTerm || roleFilter !== 'ALL') && (
-            <button
-              onClick={() => {
-                setSearchTerm('');
-                setRoleFilter('ALL');
-              }}
-              className="text-xs text-indigo-600 font-semibold hover:underline cursor-pointer"
-            >
-              Clear filters
-            </button>
-          )}
-        </div>
+              : 'No users found in the system.'
+          }
+          actionText={searchTerm || roleFilter !== 'ALL' ? 'Clear Filters' : undefined}
+          onAction={
+            searchTerm || roleFilter !== 'ALL'
+              ? () => {
+                  setSearchTerm('');
+                  setRoleFilter('ALL');
+                }
+              : undefined
+          }
+        />
       ) : (
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="overflow-x-auto">
