@@ -150,4 +150,6 @@ export interface SignUpRequest {
 export interface UserUpdateRequest {
   fullName: string;
   phone: string;
+  password?: string;
+  role?: Role;
 }
