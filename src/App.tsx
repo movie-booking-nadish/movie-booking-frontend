@@ -14,10 +14,10 @@ import BookShow from './pages/BookShow';
 import MyBookings from './pages/MyBookings';
 import PaymentPage from './pages/Payment';
 import AdminDashboard from './pages/AdminDashboard';
+import ManageMovies from './pages/ManageMovies';
 import NotAllowed from './pages/NotAllowed';
 import NotFound from './pages/NotFound';
 import {
-  AdminMoviesPage,
   AdminTheatresPage,
   AdminShowsPage,
   AdminBookingsPage,
@@ -53,7 +53,7 @@ const App: React.FC = () => {
             {/* Admin protected routes */}
             <Route element={<RoleRoute allowedRoles={['ADMIN']} />}>
               <Route path="/admin" element={<AdminDashboard />} />
-              <Route path="/admin/movies" element={<AdminMoviesPage />} />
+              <Route path="/admin/movies" element={<ManageMovies />} />
               <Route path="/admin/theatres" element={<AdminTheatresPage />} />
               <Route path="/admin/shows" element={<AdminShowsPage />} />
               <Route path="/admin/bookings" element={<AdminBookingsPage />} />
