@@ -15,7 +15,14 @@ const Navbar: React.FC = () => {
 
   const isActive = (path: string) => location.pathname === path;
 
+  const publicLinks = [
+    { name: 'Home', path: '/' },
+    { name: 'Movies', path: '/movies' },
+    { name: 'Theatres', path: '/theatres' },
+  ];
+
   const customerLinks = [
+    { name: 'Home', path: '/' },
     { name: 'Movies', path: '/movies' },
     { name: 'Theatres', path: '/theatres' },
     { name: 'Shows', path: '/shows' },
@@ -28,10 +35,15 @@ const Navbar: React.FC = () => {
     { name: 'Manage Theatres', path: '/admin/theatres' },
     { name: 'Manage Shows', path: '/admin/shows' },
     { name: 'Manage Bookings', path: '/admin/bookings' },
+    { name: 'Payments', path: '/admin/payments' },
     { name: 'Manage Users', path: '/admin/users' },
   ];
 
-  const currentLinks = role === 'ADMIN' ? adminLinks : customerLinks;
+  const currentLinks = !isAuthenticated
+    ? publicLinks
+    : role === 'ADMIN'
+    ? adminLinks
+    : customerLinks;
 
   return (
     <nav className="bg-gray-800 border-b border-gray-700 sticky top-0 z-50">
@@ -40,28 +52,28 @@ const Navbar: React.FC = () => {
           {/* Logo */}
           <div className="flex items-center gap-6">
             <Link
-              to={role === 'ADMIN' ? '/admin' : '/movies'}
-              className="text-xl font-bold bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent"
+              to={role === 'ADMIN' ? '/admin' : '/'}
+              className="text-xl font-bold bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent flex items-center gap-2"
             >
-              🎬 MovieBooking
+              <span>🎬</span>
+              <span>MovieBooking</span>
             </Link>
 
             {/* Desktop Navigation Links */}
             <div className="hidden md:flex items-center space-x-1">
-              {isAuthenticated &&
-                currentLinks.map((link) => (
-                  <Link
-                    key={link.path}
-                    to={link.path}
-                    className={`px-3 py-2 rounded-md text-sm font-medium transition duration-150 ${
-                      isActive(link.path)
-                        ? 'bg-blue-600 text-white'
-                        : 'text-gray-300 hover:bg-gray-700 hover:text-white'
-                    }`}
-                  >
-                    {link.name}
-                  </Link>
-                ))}
+              {currentLinks.map((link) => (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition duration-150 ${
+                    isActive(link.path)
+                      ? 'bg-blue-600 text-white'
+                      : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              ))}
             </div>
           </div>
 
@@ -126,63 +138,63 @@ const Navbar: React.FC = () => {
       {/* Mobile menu dropdown */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-gray-800 border-t border-gray-700 px-4 pt-2 pb-4 space-y-1">
-          {isAuthenticated ? (
-            <>
-              <div className="py-2 border-b border-gray-700 mb-2">
-                <p className="text-sm font-medium text-white">{user?.fullName}</p>
-                <p className="text-xs text-gray-400">{user?.email}</p>
-                {role === 'ADMIN' && (
-                  <span className="inline-block mt-1 px-2 py-0.5 text-xs font-semibold rounded bg-purple-900 text-purple-200">
-                    ADMIN
-                  </span>
-                )}
-              </div>
-
-              {currentLinks.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`block px-3 py-2 rounded-md text-base font-medium ${
-                    isActive(link.path)
-                      ? 'bg-blue-600 text-white'
-                      : 'text-gray-300 hover:bg-gray-700 hover:text-white'
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              ))}
-
-              <div className="pt-2 border-t border-gray-700 mt-2">
-                <button
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    handleLogout();
-                  }}
-                  className="w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-400 hover:bg-gray-700 hover:text-red-300"
-                >
-                  Logout
-                </button>
-              </div>
-            </>
-          ) : (
-            <div className="space-y-1 pt-2">
-              <Link
-                to="/signin"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-              >
-                Sign In
-              </Link>
-              <Link
-                to="/signup"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block px-3 py-2 rounded-md text-base font-medium bg-blue-600 text-white hover:bg-blue-700"
-              >
-                Sign Up
-              </Link>
+          {isAuthenticated && (
+            <div className="py-2 border-b border-gray-700 mb-2">
+              <p className="text-sm font-medium text-white">{user?.fullName}</p>
+              <p className="text-xs text-gray-400">{user?.email}</p>
+              {role === 'ADMIN' && (
+                <span className="inline-block mt-1 px-2 py-0.5 text-xs font-semibold rounded bg-purple-900 text-purple-200">
+                  ADMIN
+                </span>
+              )}
             </div>
           )}
+
+          {currentLinks.map((link) => (
+            <Link
+              key={link.path}
+              to={link.path}
+              onClick={() => setMobileMenuOpen(false)}
+              className={`block px-3 py-2 rounded-md text-base font-medium ${
+                isActive(link.path)
+                  ? 'bg-blue-600 text-white'
+                  : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+              }`}
+            >
+              {link.name}
+            </Link>
+          ))}
+
+          <div className="pt-2 border-t border-gray-700 mt-2 space-y-1">
+            {isAuthenticated ? (
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  handleLogout();
+                }}
+                className="w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-400 hover:bg-gray-700 hover:text-red-300 cursor-pointer"
+              >
+                Logout
+              </button>
+            ) : (
+              <>
+                <Link
+                  to="/signin"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  to="/signup"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block px-3 py-2 rounded-md text-base font-medium bg-blue-600 text-white hover:bg-blue-700 text-center"
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
+          </div>
         </div>
       )}
     </nav>

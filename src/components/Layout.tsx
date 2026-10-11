@@ -1,6 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
+import Footer from './Footer';
 
 const Layout: React.FC = () => {
   return (
@@ -9,9 +10,7 @@ const Layout: React.FC = () => {
       <main className="flex-1">
         <Outlet />
       </main>
-      <footer className="bg-gray-800 border-t border-gray-700 py-6 text-center text-sm text-gray-400">
-        <p>© 2026 Movie Ticket Booking System. All rights reserved.</p>
-      </footer>
+      <Footer />
     </div>
   );
 };

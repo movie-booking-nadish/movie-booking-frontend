@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
 import Layout from './components/Layout';
@@ -7,6 +7,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import RoleRoute from './components/RoleRoute';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
+import Home from './pages/Home';
 import Movies from './pages/Movies';
 import MovieDetails from './pages/MovieDetails';
 import Theatres from './pages/Theatres';
@@ -37,7 +38,7 @@ const App: React.FC = () => {
           {/* Main layout with Navbar and Footer */}
           <Route element={<Layout />}>
             {/* Public browsing routes */}
-            <Route path="/" element={<Navigate to="/movies" replace />} />
+            <Route path="/" element={<Home />} />
             <Route path="/movies" element={<Movies />} />
             <Route path="/movies/:id" element={<MovieDetails />} />
             <Route path="/theatres" element={<Theatres />} />

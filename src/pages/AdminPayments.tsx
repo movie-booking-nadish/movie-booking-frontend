@@ -123,7 +123,7 @@ const AdminPayments: React.FC = () => {
       ) : (
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm text-gray-600">
+            <table className="w-full min-w-[700px] text-left text-sm text-gray-600">
               <thead className="bg-gray-50 text-xs uppercase font-bold text-gray-500 border-b border-gray-100">
                 <tr>
                   <th className="px-6 py-4">Payment ID</th>
