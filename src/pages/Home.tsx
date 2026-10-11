@@ -6,6 +6,7 @@ import MovieCard from '../components/MovieCard';
 import Spinner from '../components/Spinner';
 import ErrorMessage from '../components/ErrorMessage';
 import EmptyState from '../components/EmptyState';
+import heroCinemaImage from '../assets/hero-cinema.png';
 
 const Home: React.FC = () => {
   const [nowShowingMovies, setNowShowingMovies] = useState<Movie[]>([]);
@@ -32,29 +33,44 @@ const Home: React.FC = () => {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-b from-gray-950 via-gray-900 to-gray-900 py-16 md:py-24 overflow-hidden border-b border-gray-800">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-blue-900/20 via-transparent to-transparent pointer-events-none" />
+      <section className="relative min-h-[580px] md:min-h-[660px] flex items-center justify-center overflow-hidden border-b border-gray-800 bg-gray-950 py-20 md:py-32">
+        {/* Cinematic Background Image Layer */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src={heroCinemaImage}
+            alt="Cinematic Theatre Experience"
+            className="w-full h-full object-cover object-center filter brightness-[0.55] contrast-[1.12]"
+          />
+          {/* Multi-layer cinematic vignette & dark gradient overlays for high legibility */}
+          <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/70 to-gray-950/85" />
+          <div className="absolute inset-0 bg-gradient-to-r from-gray-950/90 via-transparent to-gray-950/90" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_30%,_rgba(3,7,18,0.85)_100%)] pointer-events-none" />
+        </div>
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20 mb-6">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/20 text-blue-300 border border-blue-500/30 backdrop-blur-md mb-6 shadow-sm">
             ✨ Cinema Experience Reimagined
           </span>
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-tight max-w-4xl mx-auto mb-6">
-            Book Movie Tickets Online with <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">Instant Seat Selection</span>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-tight max-w-4xl mx-auto mb-6 drop-shadow-md">
+            Book Movie Tickets Online with{' '}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-300 to-indigo-400">
+              Instant Seat Selection
+            </span>
           </h1>
-          <p className="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto mb-8 font-normal leading-relaxed">
+          <p className="text-lg sm:text-xl text-gray-200 max-w-2xl mx-auto mb-8 font-normal leading-relaxed drop-shadow">
             Discover the latest blockbusters, check real-time showtimes at premier cinemas, and reserve your perfect seats in seconds.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               to="/movies"
-              className="w-full sm:w-auto px-8 py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl shadow-lg shadow-blue-600/30 transition transform hover:-translate-y-0.5 text-center"
+              className="w-full sm:w-auto px-8 py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl shadow-lg shadow-blue-600/40 transition transform hover:-translate-y-0.5 text-center"
             >
               🎬 Explore Movies
             </Link>
             <Link
               to="/shows"
-              className="w-full sm:w-auto px-8 py-3.5 bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 font-semibold rounded-xl transition text-center"
+              className="w-full sm:w-auto px-8 py-3.5 bg-gray-900/80 hover:bg-gray-800 text-gray-200 border border-gray-700/80 backdrop-blur-sm font-semibold rounded-xl transition text-center hover:border-gray-600"
             >
               📅 View Showtimes
             </Link>
