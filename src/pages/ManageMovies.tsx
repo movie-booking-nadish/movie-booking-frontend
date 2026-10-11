@@ -7,6 +7,7 @@ import StatusBadge from '../components/StatusBadge';
 import Spinner from '../components/Spinner';
 import ErrorMessage from '../components/ErrorMessage';
 import EmptyState from '../components/EmptyState';
+import { useToast } from '../context/ToastContext';
 
 const GENRES = [
   'ACTION',
@@ -33,6 +34,7 @@ const INITIAL_FORM: MovieRequest = {
 };
 
 const ManageMovies: React.FC = () => {
+  const toast = useToast();
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -124,16 +126,22 @@ const ManageMovies: React.FC = () => {
 
       if (editingMovie) {
         await movieService.update(editingMovie.id, formData);
-        setFeedback({ type: 'success', message: `Movie "${formData.title}" updated successfully.` });
+        const msg = `Movie "${formData.title}" updated successfully.`;
+        setFeedback({ type: 'success', message: msg });
+        toast.success(msg);
       } else {
         await movieService.create(formData);
-        setFeedback({ type: 'success', message: `Movie "${formData.title}" created successfully.` });
+        const msg = `Movie "${formData.title}" created successfully.`;
+        setFeedback({ type: 'success', message: msg });
+        toast.success(msg);
       }
 
       setIsModalOpen(false);
       await fetchMovies();
     } catch (err: any) {
-      setModalBackendError(err?.response?.data?.message || 'Failed to save movie.');
+      const errMsg = err?.response?.data?.message || 'Failed to save movie.';
+      setModalBackendError(errMsg);
+      toast.error(errMsg);
     } finally {
       setSubmitting(false);
     }
@@ -145,15 +153,19 @@ const ManageMovies: React.FC = () => {
     try {
       setDeleting(true);
       await movieService.delete(deletingMovie.id);
-      setFeedback({ type: 'success', message: `Movie "${deletingMovie.title}" deleted successfully.` });
+      const msg = `Movie "${deletingMovie.title}" deleted successfully.`;
+      setFeedback({ type: 'success', message: msg });
+      toast.success(msg);
       setIsDeleteDialogOpen(false);
       setDeletingMovie(null);
       await fetchMovies();
     } catch (err: any) {
+      const errMsg = err?.response?.data?.message || `Failed to delete movie "${deletingMovie.title}".`;
       setFeedback({
         type: 'error',
-        message: err?.response?.data?.message || `Failed to delete movie "${deletingMovie.title}".`,
+        message: errMsg,
       });
+      toast.error(errMsg);
       setIsDeleteDialogOpen(false);
     } finally {
       setDeleting(false);

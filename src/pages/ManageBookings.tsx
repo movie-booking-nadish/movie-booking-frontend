@@ -7,8 +7,10 @@ import StatusBadge from '../components/StatusBadge';
 import Spinner from '../components/Spinner';
 import ErrorMessage from '../components/ErrorMessage';
 import EmptyState from '../components/EmptyState';
+import { useToast } from '../context/ToastContext';
 
 const ManageBookings: React.FC = () => {
+  const toast = useToast();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -47,13 +49,17 @@ const ManageBookings: React.FC = () => {
     try {
       setUpdatingId(id);
       await bookingService.updateStatus(id, newStatus);
-      setFeedback({ type: 'success', message: `Booking #${id} status changed to ${newStatus}.` });
+      const msg = `Booking #${id} status changed to ${newStatus}.`;
+      setFeedback({ type: 'success', message: msg });
+      toast.success(msg);
       await fetchBookings();
     } catch (err: any) {
+      const errMsg = err?.response?.data?.message || `Failed to update status for booking #${id}.`;
       setFeedback({
         type: 'error',
-        message: err?.response?.data?.message || `Failed to update status for booking #${id}.`,
+        message: errMsg,
       });
+      toast.error(errMsg);
     } finally {
       setUpdatingId(null);
     }
@@ -70,18 +76,22 @@ const ManageBookings: React.FC = () => {
     try {
       setCancelling(true);
       await bookingService.cancel(cancellingBooking.id);
+      const msg = `Booking #${cancellingBooking.id} has been cancelled and seats released.`;
       setFeedback({
         type: 'success',
-        message: `Booking #${cancellingBooking.id} has been cancelled and seats released.`,
+        message: msg,
       });
+      toast.success(msg);
       setIsCancelDialogOpen(false);
       setCancellingBooking(null);
       await fetchBookings();
     } catch (err: any) {
+      const errMsg = err?.response?.data?.message || `Failed to cancel booking #${cancellingBooking.id}.`;
       setFeedback({
         type: 'error',
-        message: err?.response?.data?.message || `Failed to cancel booking #${cancellingBooking.id}.`,
+        message: errMsg,
       });
+      toast.error(errMsg);
       setIsCancelDialogOpen(false);
     } finally {
       setCancelling(false);

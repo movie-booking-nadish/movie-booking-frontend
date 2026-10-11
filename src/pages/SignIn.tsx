@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { authService } from '../services/authService';
 import { useAuth } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
 import axios from 'axios';
 
 const SignIn: React.FC = () => {
@@ -9,6 +10,7 @@ const SignIn: React.FC = () => {
   const location = useLocation();
   const successMessage = (location.state as { message?: string })?.message;
   const { login } = useAuth();
+  const toast = useToast();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -45,6 +47,7 @@ const SignIn: React.FC = () => {
     try {
       const response = await authService.signIn({ email, password });
       login(response);
+      toast.success(`Welcome back, ${response.fullName}!`);
 
       if (response.role === 'ADMIN') {
         navigate('/admin');
@@ -55,8 +58,11 @@ const SignIn: React.FC = () => {
       if (axios.isAxiosError(err)) {
         const message = err.response?.data?.message || 'Invalid email or password';
         setServerError(message);
+        toast.error(message);
       } else {
-        setServerError('An unexpected error occurred. Please try again.');
+        const message = 'An unexpected error occurred. Please try again.';
+        setServerError(message);
+        toast.error(message);
       }
     } finally {
       setLoading(false);

@@ -6,10 +6,12 @@ import { Booking, Payment, PaymentMethod } from '../types';
 import StatusBadge from '../components/StatusBadge';
 import Spinner from '../components/Spinner';
 import ErrorMessage from '../components/ErrorMessage';
+import { useToast } from '../context/ToastContext';
 
 const PaymentPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const bookingId = Number(id);
+  const toast = useToast();
 
   const [booking, setBooking] = useState<Booking | null>(null);
   const [existingPayment, setExistingPayment] = useState<Payment | null>(null);
@@ -70,11 +72,19 @@ const PaymentPage: React.FC = () => {
       setPaymentResult(processedPayment);
       setExistingPayment(processedPayment);
 
+      if (processedPayment.status === 'COMPLETED') {
+        toast.success('Payment completed successfully! Your booking is confirmed.');
+      } else {
+        toast.error('Payment failed or declined. Please retry or choose another method.');
+      }
+
       // Refresh booking to reflect new status (CONFIRMED or PENDING)
       const updatedBooking = await bookingService.getById(booking.id);
       setBooking(updatedBooking);
     } catch (err: any) {
-      setError(err?.response?.data?.message || 'Payment processing failed. Please try again.');
+      const errMsg = err?.response?.data?.message || 'Payment processing failed. Please try again.';
+      setError(errMsg);
+      toast.error(errMsg);
     } finally {
       setProcessing(false);
     }

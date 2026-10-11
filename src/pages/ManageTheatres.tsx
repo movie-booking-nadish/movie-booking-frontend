@@ -7,6 +7,7 @@ import StatusBadge from '../components/StatusBadge';
 import Spinner from '../components/Spinner';
 import ErrorMessage from '../components/ErrorMessage';
 import EmptyState from '../components/EmptyState';
+import { useToast } from '../context/ToastContext';
 
 const INITIAL_FORM: TheatreRequest = {
   name: '',
@@ -16,6 +17,7 @@ const INITIAL_FORM: TheatreRequest = {
 };
 
 const ManageTheatres: React.FC = () => {
+  const toast = useToast();
   const [theatres, setTheatres] = useState<Theatre[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -101,16 +103,22 @@ const ManageTheatres: React.FC = () => {
 
       if (editingTheatre) {
         await theatreService.update(editingTheatre.id, formData);
-        setFeedback({ type: 'success', message: `Theatre "${formData.name}" updated successfully.` });
+        const msg = `Theatre "${formData.name}" updated successfully.`;
+        setFeedback({ type: 'success', message: msg });
+        toast.success(msg);
       } else {
         await theatreService.create(formData);
-        setFeedback({ type: 'success', message: `Theatre "${formData.name}" created successfully.` });
+        const msg = `Theatre "${formData.name}" created successfully.`;
+        setFeedback({ type: 'success', message: msg });
+        toast.success(msg);
       }
 
       setIsModalOpen(false);
       await fetchTheatres();
     } catch (err: any) {
-      setModalBackendError(err?.response?.data?.message || 'Failed to save theatre.');
+      const errMsg = err?.response?.data?.message || 'Failed to save theatre.';
+      setModalBackendError(errMsg);
+      toast.error(errMsg);
     } finally {
       setSubmitting(false);
     }
@@ -122,15 +130,19 @@ const ManageTheatres: React.FC = () => {
     try {
       setDeleting(true);
       await theatreService.delete(deletingTheatre.id);
-      setFeedback({ type: 'success', message: `Theatre "${deletingTheatre.name}" deleted successfully.` });
+      const msg = `Theatre "${deletingTheatre.name}" deleted successfully.`;
+      setFeedback({ type: 'success', message: msg });
+      toast.success(msg);
       setIsDeleteDialogOpen(false);
       setDeletingTheatre(null);
       await fetchTheatres();
     } catch (err: any) {
+      const errMsg = err?.response?.data?.message || `Failed to delete theatre "${deletingTheatre.name}".`;
       setFeedback({
         type: 'error',
-        message: err?.response?.data?.message || `Failed to delete theatre "${deletingTheatre.name}".`,
+        message: errMsg,
       });
+      toast.error(errMsg);
       setIsDeleteDialogOpen(false);
     } finally {
       setDeleting(false);

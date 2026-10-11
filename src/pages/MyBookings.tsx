@@ -7,8 +7,10 @@ import ConfirmDialog from '../components/ConfirmDialog';
 import Spinner from '../components/Spinner';
 import ErrorMessage from '../components/ErrorMessage';
 import EmptyState from '../components/EmptyState';
+import { useToast } from '../context/ToastContext';
 
 const MyBookings: React.FC = () => {
+  const toast = useToast();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -46,18 +48,22 @@ const MyBookings: React.FC = () => {
     try {
       setCancelling(true);
       await bookingService.cancel(selectedBooking.id);
+      const msg = `Booking #${selectedBooking.id} for "${selectedBooking.movieTitle || 'Movie'}" has been successfully cancelled.`;
       setFeedback({
         type: 'success',
-        message: `Booking #${selectedBooking.id} for "${selectedBooking.movieTitle || 'Movie'}" has been successfully cancelled.`,
+        message: msg,
       });
+      toast.success(msg);
       setIsCancelDialogOpen(false);
       setSelectedBooking(null);
       await fetchBookings();
     } catch (err: any) {
+      const errMsg = err?.response?.data?.message || `Failed to cancel booking #${selectedBooking.id}.`;
       setFeedback({
         type: 'error',
-        message: err?.response?.data?.message || `Failed to cancel booking #${selectedBooking.id}.`,
+        message: errMsg,
       });
+      toast.error(errMsg);
     } finally {
       setCancelling(false);
     }

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { authService } from '../services/authService';
+import { useToast } from '../context/ToastContext';
 import axios from 'axios';
 
 const SignUp: React.FC = () => {
   const navigate = useNavigate();
+  const toast = useToast();
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -80,9 +82,12 @@ const SignUp: React.FC = () => {
         password: formData.password,
       });
 
+      const successMsg = 'Registration successful! Please sign in with your credentials.';
+      toast.success(successMsg);
+
       // Redirect to sign in page upon success
       navigate('/signin', {
-        state: { message: 'Registration successful! Please sign in with your credentials.' },
+        state: { message: successMsg },
       });
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
@@ -93,11 +98,16 @@ const SignUp: React.FC = () => {
             fieldErrors[key] = String(val);
           });
           setErrors(fieldErrors);
+          toast.error(errorData?.message || 'Please correct the form errors.');
         } else {
-          setServerError(errorData?.message || 'Failed to register account.');
+          const msg = errorData?.message || 'Failed to register account.';
+          setServerError(msg);
+          toast.error(msg);
         }
       } else {
-        setServerError('An unexpected error occurred. Please try again.');
+        const msg = 'An unexpected error occurred. Please try again.';
+        setServerError(msg);
+        toast.error(msg);
       }
     } finally {
       setLoading(false);

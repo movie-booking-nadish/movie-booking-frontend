@@ -7,9 +7,11 @@ import ConfirmDialog from '../components/ConfirmDialog';
 import Spinner from '../components/Spinner';
 import ErrorMessage from '../components/ErrorMessage';
 import EmptyState from '../components/EmptyState';
+import { useToast } from '../context/ToastContext';
 
 const ManageUsers: React.FC = () => {
   const { user: currentUser } = useAuth();
+  const toast = useToast();
 
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -96,15 +98,19 @@ const ManageUsers: React.FC = () => {
       setModalBackendError(null);
 
       await userService.update(editingUser.id, formData);
+      const msg = `User "${formData.fullName}" updated successfully.`;
       setFeedback({
         type: 'success',
-        message: `User "${formData.fullName}" updated successfully.`,
+        message: msg,
       });
+      toast.success(msg);
 
       setIsModalOpen(false);
       await fetchUsers();
     } catch (err: any) {
-      setModalBackendError(err?.response?.data?.message || 'Failed to update user profile.');
+      const errMsg = err?.response?.data?.message || 'Failed to update user profile.';
+      setModalBackendError(errMsg);
+      toast.error(errMsg);
     } finally {
       setSubmitting(false);
     }
@@ -116,18 +122,22 @@ const ManageUsers: React.FC = () => {
     try {
       setDeleting(true);
       await userService.delete(deletingUser.id);
+      const msg = `User "${deletingUser.fullName}" deleted successfully.`;
       setFeedback({
         type: 'success',
-        message: `User "${deletingUser.fullName}" deleted successfully.`,
+        message: msg,
       });
+      toast.success(msg);
       setIsDeleteDialogOpen(false);
       setDeletingUser(null);
       await fetchUsers();
     } catch (err: any) {
+      const errMsg = err?.response?.data?.message || `Failed to delete user "${deletingUser.fullName}".`;
       setFeedback({
         type: 'error',
-        message: err?.response?.data?.message || `Failed to delete user "${deletingUser.fullName}".`,
+        message: errMsg,
       });
+      toast.error(errMsg);
       setIsDeleteDialogOpen(false);
     } finally {
       setDeleting(false);

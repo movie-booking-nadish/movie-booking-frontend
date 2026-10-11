@@ -6,10 +6,12 @@ import { Show } from '../types';
 import { SeatMap } from '../components/SeatMap';
 import Spinner from '../components/Spinner';
 import ErrorMessage from '../components/ErrorMessage';
+import { useToast } from '../context/ToastContext';
 
 const BookShow: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const toast = useToast();
 
   const [show, setShow] = useState<Show | null>(null);
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
@@ -60,13 +62,16 @@ const BookShow: React.FC = () => {
         numberOfTickets: selectedSeats.length,
       });
 
-      setBookingSuccess('Booking successfully created! Redirecting to payment...');
+      const successMsg = 'Booking successfully created! Redirecting to payment...';
+      setBookingSuccess(successMsg);
+      toast.success(successMsg);
       setTimeout(() => {
         navigate(`/bookings/${booking.id}/payment`);
       }, 1000);
     } catch (err: any) {
       const msg = err?.response?.data?.message || 'Failed to create booking. Please try again.';
       setBookingError(msg);
+      toast.error(msg);
       // On failure refresh the seat map and reset chosen seats
       setRefreshKey((k) => k + 1);
       setSelectedSeats([]);

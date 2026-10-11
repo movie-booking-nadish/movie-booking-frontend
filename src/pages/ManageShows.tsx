@@ -9,6 +9,7 @@ import StatusBadge from '../components/StatusBadge';
 import Spinner from '../components/Spinner';
 import ErrorMessage from '../components/ErrorMessage';
 import EmptyState from '../components/EmptyState';
+import { useToast } from '../context/ToastContext';
 
 const INITIAL_FORM: ShowRequest = {
   movieId: 0,
@@ -20,6 +21,7 @@ const INITIAL_FORM: ShowRequest = {
 };
 
 const ManageShows: React.FC = () => {
+  const toast = useToast();
   const [shows, setShows] = useState<Show[]>([]);
   const [movies, setMovies] = useState<Movie[]>([]);
   const [theatres, setTheatres] = useState<Theatre[]>([]);
@@ -165,19 +167,24 @@ const ManageShows: React.FC = () => {
 
       if (editingShow) {
         await showService.update(editingShow.id, payload);
-        setFeedback({ type: 'success', message: `Show #${editingShow.id} updated successfully.` });
+        const msg = `Show #${editingShow.id} updated successfully.`;
+        setFeedback({ type: 'success', message: msg });
+        toast.success(msg);
       } else {
         await showService.create(payload);
-        setFeedback({ type: 'success', message: 'Show scheduled successfully.' });
+        const msg = 'Show scheduled successfully.';
+        setFeedback({ type: 'success', message: msg });
+        toast.success(msg);
       }
 
       setIsModalOpen(false);
       await loadAllData();
     } catch (err: any) {
-      setModalBackendError(
+      const errMsg =
         err?.response?.data?.message ||
-          'Failed to schedule show. Please check for scheduling conflicts.'
-      );
+        'Failed to schedule show. Please check for scheduling conflicts.';
+      setModalBackendError(errMsg);
+      toast.error(errMsg);
     } finally {
       setSubmitting(false);
     }
@@ -189,15 +196,19 @@ const ManageShows: React.FC = () => {
     try {
       setDeleting(true);
       await showService.delete(deletingShow.id);
-      setFeedback({ type: 'success', message: `Show #${deletingShow.id} deleted successfully.` });
+      const msg = `Show #${deletingShow.id} deleted successfully.`;
+      setFeedback({ type: 'success', message: msg });
+      toast.success(msg);
       setIsDeleteDialogOpen(false);
       setDeletingShow(null);
       await loadAllData();
     } catch (err: any) {
+      const errMsg = err?.response?.data?.message || `Failed to delete show #${deletingShow.id}.`;
       setFeedback({
         type: 'error',
-        message: err?.response?.data?.message || `Failed to delete show #${deletingShow.id}.`,
+        message: errMsg,
       });
+      toast.error(errMsg);
       setIsDeleteDialogOpen(false);
     } finally {
       setDeleting(false);
