@@ -173,3 +173,24 @@ The backend database automatically seeds initial demo accounts for immediate acc
   });
   ```
 * **Response Interceptor:** An Axios response interceptor monitors all responses. If an HTTP `401 Unauthorized` status is received, it automatically wipes the stored token and user data from `localStorage` and redirects the user to `/signin`.
+
+
+---
+
+## 🔮 Future Expansion
+
+To further elevate the platform and enhance both customer satisfaction and administrative efficiency, the following roadmap enhancements are planned:
+
+### 1. Interactive Theatre Screen & Realistic Seat Layout
+* **Overview:** Transition from a standard grid view to an authentic SVG- or Canvas-based theatre layout depicting curved seating tiers (e.g., VIP Recliners, Premium Balcony, Standard Stalls), aisle walkways, disability-accessible spaces, and visual perspective relative to the silver screen.
+* **UX Impact:**
+  * **Spatial Clarity:** Patrons can accurately perceive their viewing distance, screen sightlines, and angle from anywhere in the hall prior to booking.
+  * **Tiered Pricing Transparency:** Clearly demarcates luxury vs. standard seats with instant visual feedback, helping users choose tickets that match their comfort and budget preferences.
+  * **Reduced Booking Errors:** Eliminates ambiguity about proximity to exits, aisles, or speakers, creating confidence during reservation.
+
+### 2. Discount & Promotional Code Interface
+* **Overview:** An integrated voucher and coupon redemption engine at checkout allowing customers to apply promotional codes, seasonal discounts, and partner vouchers (e.g., credit card loyalty perks or student discounts).
+* **UX Impact:**
+  * **Frictionless Savings:** Real-time coupon validation with immediate inline price recalculation and visual breakdown of applied discounts before initiating payment.
+  * **Customer Retention & Loyalty:** Drives repeat bookings through personalized rewards, promotional campaigns, and special premiere event promotions.
+  * **Transparent Billing:** Clear itemized summary detailing original ticket cost, discount deduction, and net payable amount, avoiding surprise fees and reducing cart abandonment.
