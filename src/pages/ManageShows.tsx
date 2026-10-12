@@ -435,7 +435,7 @@ const ManageShows: React.FC = () => {
             <select
               value={formData.movieId}
               onChange={(e) => setFormData({ ...formData, movieId: Number(e.target.value) })}
-              className={`w-full px-3 py-2 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white ${
+              className={`w-full px-3 py-2 rounded-lg border text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white ${
                 formErrors.movieId ? 'border-red-300' : 'border-gray-300'
               }`}
             >
@@ -458,7 +458,7 @@ const ManageShows: React.FC = () => {
             <select
               value={formData.theatreId}
               onChange={(e) => setFormData({ ...formData, theatreId: Number(e.target.value) })}
-              className={`w-full px-3 py-2 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white ${
+              className={`w-full px-3 py-2 rounded-lg border text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white ${
                 formErrors.theatreId ? 'border-red-300' : 'border-gray-300'
               }`}
             >
@@ -483,7 +483,7 @@ const ManageShows: React.FC = () => {
                 type="date"
                 value={formData.showDate}
                 onChange={(e) => setFormData({ ...formData, showDate: e.target.value })}
-                className={`w-full px-3 py-2 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white ${
+                className={`w-full px-3 py-2 rounded-lg border text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white ${
                   formErrors.showDate ? 'border-red-300' : 'border-gray-300'
                 }`}
               />
@@ -501,7 +501,7 @@ const ManageShows: React.FC = () => {
                 step="1"
                 value={formData.showTime.substring(0, 5)}
                 onChange={(e) => setFormData({ ...formData, showTime: `${e.target.value}:00` })}
-                className={`w-full px-3 py-2 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white ${
+                className={`w-full px-3 py-2 rounded-lg border text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white ${
                   formErrors.showTime ? 'border-red-300' : 'border-gray-300'
                 }`}
               />
@@ -522,7 +522,7 @@ const ManageShows: React.FC = () => {
                 step="0.01"
                 value={formData.ticketPrice}
                 onChange={(e) => setFormData({ ...formData, ticketPrice: Number(e.target.value) })}
-                className={`w-full px-3 py-2 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+                className={`w-full px-3 py-2 rounded-lg border text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
                   formErrors.ticketPrice ? 'border-red-300' : 'border-gray-300'
                 }`}
               />
@@ -536,7 +536,7 @@ const ManageShows: React.FC = () => {
               <select
                 value={formData.status}
                 onChange={(e) => setFormData({ ...formData, status: e.target.value as ShowStatus })}
-                className="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+                className="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
               >
                 <option value="SCHEDULED">SCHEDULED</option>
                 <option value="RUNNING">RUNNING</option>
