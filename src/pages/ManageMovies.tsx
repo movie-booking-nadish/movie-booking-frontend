@@ -228,7 +228,7 @@ const ManageMovies: React.FC = () => {
             placeholder="Search by title, genre, language..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            className="w-full pl-9 pr-4 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
           />
           <span className="absolute left-3 top-2.5 text-gray-400 text-sm">🔍</span>
         </div>
@@ -365,7 +365,7 @@ const ManageMovies: React.FC = () => {
               type="text"
               value={formData.title}
               onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              className={`w-full px-3 py-2 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+              className={`w-full px-3 py-2 rounded-lg border text-sm text-gray-900 placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
                 formErrors.title ? 'border-red-300' : 'border-gray-300'
               }`}
               placeholder="e.g. Inception"
@@ -379,7 +379,7 @@ const ManageMovies: React.FC = () => {
               rows={3}
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className={`w-full px-3 py-2 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+              className={`w-full px-3 py-2 rounded-lg border text-sm text-gray-900 placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
                 formErrors.description ? 'border-red-300' : 'border-gray-300'
               }`}
               placeholder="Brief summary or synopsis..."
@@ -399,7 +399,7 @@ const ManageMovies: React.FC = () => {
                 min={1}
                 value={formData.duration}
                 onChange={(e) => setFormData({ ...formData, duration: Number(e.target.value) })}
-                className={`w-full px-3 py-2 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+                className={`w-full px-3 py-2 rounded-lg border text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
                   formErrors.duration ? 'border-red-300' : 'border-gray-300'
                 }`}
               />
@@ -414,7 +414,7 @@ const ManageMovies: React.FC = () => {
                 type="text"
                 value={formData.language}
                 onChange={(e) => setFormData({ ...formData, language: e.target.value })}
-                className={`w-full px-3 py-2 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+                className={`w-full px-3 py-2 rounded-lg border text-sm text-gray-900 placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
                   formErrors.language ? 'border-red-300' : 'border-gray-300'
                 }`}
                 placeholder="e.g. English, Sinhala"
@@ -431,7 +431,7 @@ const ManageMovies: React.FC = () => {
               <select
                 value={formData.genre}
                 onChange={(e) => setFormData({ ...formData, genre: e.target.value })}
-                className="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+                className="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
               >
                 {GENRES.map((g) => (
                   <option key={g} value={g}>
@@ -449,7 +449,7 @@ const ManageMovies: React.FC = () => {
                 type="date"
                 value={formData.releaseDate}
                 onChange={(e) => setFormData({ ...formData, releaseDate: e.target.value })}
-                className="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+                className="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
               />
             </div>
 
@@ -458,7 +458,7 @@ const ManageMovies: React.FC = () => {
               <select
                 value={formData.status}
                 onChange={(e) => setFormData({ ...formData, status: e.target.value as MovieStatus })}
-                className="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+                className="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
               >
                 <option value="NOW_SHOWING">NOW_SHOWING</option>
                 <option value="UPCOMING">UPCOMING</option>
@@ -475,7 +475,7 @@ const ManageMovies: React.FC = () => {
               type="url"
               value={formData.posterUrl}
               onChange={(e) => setFormData({ ...formData, posterUrl: e.target.value })}
-              className="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm text-gray-900 placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="https://example.com/poster.jpg"
             />
           </div>
