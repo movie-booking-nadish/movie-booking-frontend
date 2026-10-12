@@ -75,7 +75,7 @@ const AdminPayments: React.FC = () => {
             placeholder="Search by Payment ID, Booking ID, Method..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full pl-9 pr-4 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
           <span className="absolute left-3 top-2.5 text-gray-400 text-sm">🔍</span>
         </div>
