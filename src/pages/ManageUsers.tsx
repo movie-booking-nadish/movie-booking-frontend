@@ -201,7 +201,7 @@ const ManageUsers: React.FC = () => {
             placeholder="Search by name, email, phone..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full pl-9 pr-4 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
           <span className="absolute left-3 top-2.5 text-gray-400 text-sm">🔍</span>
         </div>
@@ -361,7 +361,7 @@ const ManageUsers: React.FC = () => {
               type="text"
               value={formData.fullName}
               onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-              className={`w-full px-3 py-2 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+              className={`w-full px-3 py-2 rounded-lg border text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
                 formErrors.fullName ? 'border-red-300' : 'border-gray-300'
               }`}
             />
@@ -378,7 +378,7 @@ const ManageUsers: React.FC = () => {
               type="text"
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              className={`w-full px-3 py-2 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+              className={`w-full px-3 py-2 rounded-lg border text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
                 formErrors.phone ? 'border-red-300' : 'border-gray-300'
               }`}
             />
@@ -390,7 +390,7 @@ const ManageUsers: React.FC = () => {
             <select
               value={formData.role}
               onChange={(e) => setFormData({ ...formData, role: e.target.value as Role })}
-              className="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+              className="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
             >
               <option value="CUSTOMER">CUSTOMER</option>
               <option value="ADMIN">ADMIN</option>
