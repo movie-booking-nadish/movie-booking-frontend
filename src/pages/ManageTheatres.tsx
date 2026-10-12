@@ -204,7 +204,7 @@ const ManageTheatres: React.FC = () => {
             placeholder="Search by name or location..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full pl-9 pr-4 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
           <span className="absolute left-3 top-2.5 text-gray-400 text-sm">🔍</span>
         </div>
@@ -322,7 +322,7 @@ const ManageTheatres: React.FC = () => {
               type="text"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className={`w-full px-3 py-2 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+              className={`w-full px-3 py-2 rounded-lg border text-sm text-gray-900 placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
                 formErrors.name ? 'border-red-300' : 'border-gray-300'
               }`}
               placeholder="e.g. Liberty Cinema"
@@ -338,7 +338,7 @@ const ManageTheatres: React.FC = () => {
               type="text"
               value={formData.location}
               onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-              className={`w-full px-3 py-2 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+              className={`w-full px-3 py-2 rounded-lg border text-sm text-gray-900 placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
                 formErrors.location ? 'border-red-300' : 'border-gray-300'
               }`}
               placeholder="e.g. Colombo 03"
@@ -357,7 +357,7 @@ const ManageTheatres: React.FC = () => {
               min={1}
               value={formData.capacity}
               onChange={(e) => setFormData({ ...formData, capacity: Number(e.target.value) })}
-              className={`w-full px-3 py-2 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+              className={`w-full px-3 py-2 rounded-lg border text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
                 formErrors.capacity ? 'border-red-300' : 'border-gray-300'
               }`}
             />
@@ -375,7 +375,7 @@ const ManageTheatres: React.FC = () => {
               onChange={(e) =>
                 setFormData({ ...formData, status: e.target.value as TheatreStatus })
               }
-              className="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+              className="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
             >
               <option value="ACTIVE">ACTIVE</option>
               <option value="INACTIVE">INACTIVE</option>
